@@ -12,20 +12,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ModeToggle } from "@/layout/ModeToggler"
-import {Link} from "react-router"
+import {Link, useLocation} from "react-router"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home", active: true },
-  { href: "#", label: "Features" },
-  { href: "#", label: "Pricing" },
-  { href: "#", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
 ]
 
 export default function Navbar() {
+  const location = useLocation();
+
   return (
-    <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b px-4 md:px-6">
+      <div className="flex h-16 items-center justify-between gap-4 max-w-7xl mx-auto">
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -63,40 +67,48 @@ export default function Navbar() {
                 </svg>
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
-              <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="py-1.5"
-                        active={link.active}
-                      >
-                        {link.label}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
+            <PopoverContent align="start" className="w-48 p-2 md:hidden">
+              <div className="flex flex-col space-y-1">
+                {navigationLinks.map((link, index) => (
+                  <Link
+                    key={index}
+                    to={link.href}
+                    className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                      location.pathname === link.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </PopoverContent>
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
-              {/* <Logo /> */}
-            </a>
+            <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:text-primary/90">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span className="text-primary-foreground font-bold">Z</span>
+              </div>
+              ZenoPay
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
+              <NavigationMenuList className="gap-1">
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      active={link.active}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      {link.label}
+                    <NavigationMenuLink asChild>
+                      <Link
+                        to={link.href}
+                        className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                          location.pathname === link.href
+                            ? "text-primary bg-accent"
+                            : "text-muted-foreground hover:text-primary hover:bg-accent/50"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -110,7 +122,7 @@ export default function Navbar() {
                 <Link to="/login">Sign In</Link>
           </Button>
           <Button asChild size="sm" className="text-sm">
-            <a href="#">Get Started</a>
+            <Link to="/register">Get Started</Link>
           </Button>
           <ModeToggle />
         </div>
