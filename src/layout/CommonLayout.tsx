@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import type { ReactNode } from "react";
 
 interface IProps{
@@ -7,7 +8,7 @@ interface IProps{
 export default function CommonLayout({children} : IProps) {
     return (
         <div>
-            
+            <Navbar/>
             {children}
           
         </div>
