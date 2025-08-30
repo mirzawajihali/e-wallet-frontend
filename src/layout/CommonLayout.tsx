@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import type { ReactNode } from "react";
 
@@ -10,6 +11,7 @@ export default function CommonLayout({children} : IProps) {
         <div>
             <Navbar/>
             {children}
+            <Footer/>
           
         </div>
     );
