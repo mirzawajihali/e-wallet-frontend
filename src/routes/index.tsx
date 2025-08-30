@@ -1,39 +1,47 @@
-import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
+import App from "@/App";
 import About from "@/pages/About";
-import Features from "@/pages/Features";
-import Pricing from "@/pages/Pricing";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
-import CommonLayout from "@/layout/CommonLayout";
+import Features from "@/pages/Features";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import Pricing from "@/pages/Pricing";
+import Register from "@/pages/Register";
+
 
 import { createBrowserRouter } from "react-router";
 
 const router = createBrowserRouter([
   {
+    Component: App,
     path: "/",
-    element: <CommonLayout><Home /></CommonLayout>,
-  },
-  {
-    path: "/about",
-    element: <CommonLayout><About /></CommonLayout>,
-  },
-  {
-    path: "/features",
-    element: <CommonLayout><Features /></CommonLayout>,
-  },
-  {
-    path: "/pricing",
-    element: <CommonLayout><Pricing /></CommonLayout>,
-  },
-  {
-    path: "/contact",
-    element: <CommonLayout><Contact /></CommonLayout>,
-  },
-  {
-    path: "/faq",
-    element: <CommonLayout><FAQ /></CommonLayout>,
+    children: [
+      {
+        Component: Home,
+        path: "/",
+
+      },
+      {
+        Component: About,
+        path: "/about",
+      },
+      {
+        Component: Features,
+        path: "/features",
+      },
+      {
+        Component: Pricing,
+        path: "/pricing",
+      },
+      {
+        Component: Contact,
+        path: "/contact",
+      },
+      {
+        Component: FAQ,
+        path: "/faq",
+      },
+    ],
   },
   {
     Component: Register,
@@ -43,6 +51,8 @@ const router = createBrowserRouter([
     Component: Login,
     path: "/login",
   },
+
+
 ]);
 
 export default router

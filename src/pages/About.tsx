@@ -4,7 +4,7 @@ import TeamDetails from "@/modules/Normal/TeamDetails";
 
 const About = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-w-7xl mx-auto">
       <ServiceStory />
       <Mission />
       <TeamDetails />
