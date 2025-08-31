@@ -28,26 +28,47 @@ export function LoginForm({
   const [login] = useLoginMutation();
 
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit : SubmitHandler<FieldValues> = async (data) => {
     const userInfo = {
       email: data.email,
       password: data.password,
     };
+    
+    console.log('🔄 Attempting login with:', { email: userInfo.email });
+    
     try {
       const res = await login(userInfo).unwrap();
-      console.log(res);
+      console.log('✅ Login response:', res);
+      
       if(res.success){
         toast.success("Login Successful");
-        navigate("/");
+        
+        // If backend sends token in response data, you can manually set it in cookies
+        if (res.data?.accessToken) {
+          console.log('🍪 Setting access token in cookies manually');
+          document.cookie = `accessToken=${res.data.accessToken}; path=/; SameSite=Lax`;
+        }
+        
+        navigate("/"); // Navigate to dashboard or home after login
+      } else {
+        toast.error(res.message || "Login failed");
       }
-    } catch (err) {
-      console.error(err);
-
+    } catch (err: unknown) {
+      console.error('❌ Login error:', err);
       
-    
-    
-  };}
+      const apiError = err as { status?: number; data?: { message?: string } };
+      
+      if (apiError.status === 404) {
+        toast.error("Login endpoint not found. Please check the API URL.");
+      } else if (apiError.status === 401) {
+        toast.error("Invalid email or password");
+      } else if (apiError.data?.message) {
+        toast.error(apiError.data.message);
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
