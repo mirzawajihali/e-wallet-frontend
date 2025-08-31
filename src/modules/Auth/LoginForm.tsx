@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useLoginMutation } from "@/redux/Auth/auth.api";
 // import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 
@@ -21,30 +22,32 @@ import { toast } from "sonner";
 export function LoginForm({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement>){
   const navigate = useNavigate();
   const form = useForm();
-//   const [login] = useLoginMutation();
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const [login] = useLoginMutation();
+
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit : SubmitHandler<FieldValues> = async (data) => {
     const userInfo = {
-   
       email: data.email,
       password: data.password,
     };
-    // try {
-    //   const res = await login(data).unwrap();
-    //   console.log(res);
-    //   if(res.success){
-    //     toast.success("Login Successful");
-    //     navigate("/");
-    //   }
-    // } catch (err) {
-    //   console.error(err);
+    try {
+      const res = await login(userInfo).unwrap();
+      console.log(res);
+      if(res.success){
+        toast.success("Login Successful");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
 
       
     
-    // }
-  };
+    
+  };}
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

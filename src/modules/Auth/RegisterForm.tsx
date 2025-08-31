@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 // import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { useRegisterMutation } from "@/redux/Auth/auth.api";
 
 const registerSchema = z
   .object({
@@ -38,11 +39,13 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
+
+
 export function RegisterForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-//   const [register] = useRegisterMutation();
+  const [register] = useRegisterMutation();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -56,20 +59,34 @@ export function RegisterForm({
   });
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    const userInfo = {
+    const userInfo  = {
       name: data.name,
       email: data.email,
       password: data.password,
     };
 
-    // try {
-    //   const result = await register(userInfo).unwrap();
-    //   console.log(result);
-    //   toast.success("User created successfully");
-    //   navigate("/verify");
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    console.log('🔄 Submitting registration with data:', userInfo);
+
+    try {
+      const result = await register(userInfo).unwrap();
+      console.log('✅ Registration successful:', result);
+      toast.success("User created successfully");
+      navigate("/");
+    } catch (error: unknown) {
+      console.error('❌ Registration failed:', error);
+      
+      // Enhanced error handling
+      const apiError = error as { status?: number; data?: { message?: string; errorSources?: Array<{ message?: string }> } };
+      
+      if (apiError.status === 400 && apiError.data?.message) {
+        toast.error(apiError.data.message || "Registration failed");
+      } else if (apiError.data?.errorSources?.length && apiError.data.errorSources.length > 0) {
+        const errorMessage = apiError.data.errorSources[0]?.message || "Validation error";
+        toast.error(errorMessage);
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
+    }
   };
 
   return (
