@@ -30,7 +30,7 @@ export const adminSidebarItems : IsidebarItems[] = [
       ],
     },
     {
-      title: "Work",
+      title: "Agents",
     
       items: [
         {
