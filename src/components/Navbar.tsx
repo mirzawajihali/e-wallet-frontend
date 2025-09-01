@@ -130,12 +130,26 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {data?.data ? (
             <>
+
+              {data?.data?.role ==="ADMIN" && (
+               <Button asChild variant="ghost" size="sm" className="text-sm">
+                 <Link to="/admin">Admin Panel</Link>
+               </Button>
+             )}
+             {data?.data?.role ==="AGENT" && (
+               <Button asChild variant="ghost" size="sm" className="text-sm">
+                 <Link to="/agent">Agent Dashboard</Link>
+               </Button>
+             )}
+             {data?.data?.role ==="USER" && (
+               <Button asChild variant="ghost" size="sm" className="text-sm">
+                 <Link to="/user">Dashboard</Link>
+               </Button>
+             )}
               <Button size="sm" className="text-sm" onClick={handleLogout} >
                Logout
               </Button>
-              <Button asChild size="sm" className="text-sm">
-                <Link to="/">Dashboard</Link>
-              </Button>
+           
             </>
           ) : (
             <>

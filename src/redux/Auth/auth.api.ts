@@ -3,6 +3,7 @@ import { baseApi } from "../bassApi";
 
 
 
+
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginCredentials>({
@@ -42,8 +43,26 @@ export const authApi = baseApi.injectEndpoints({
       }),
 
        providesTags: ["USER"],
+    }),
+    allUsers : builder.query({
+      query: (params) => ({
+        url: "/users",
+        method: "GET",
+        params : params
+      }),
+
+       providesTags: ["USER"],
+    }),
+    allAgents : builder.query({
+      query: (params) => ({
+        url: "/users/agents",
+        method: "GET",
+        params : params
+      }),
+
+       providesTags: ["USER"],
     })
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery } = authApi;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery, useAllUsersQuery, useAllAgentsQuery } = authApi;

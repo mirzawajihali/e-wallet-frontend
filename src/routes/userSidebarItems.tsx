@@ -34,12 +34,12 @@ export const userSidebarItems : IsidebarItems[] = [
         },
         {
           title: "Withdraw Money",
-          url: "withdraw", 
+          url: "withdraw", // Remove /admin prefix since it's already in the parent route
           component :  Withdraw,
         },
         {
           title: "Send Money",
-          url: "send-money", 
+          url: "send-money", // Remove /admin prefix since it's already in the parent route
           component :  SendMoney,
         },
        

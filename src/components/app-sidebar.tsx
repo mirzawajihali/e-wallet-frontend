@@ -20,6 +20,7 @@ import { User } from "lucide-react"
 import { Button } from "./ui/button"
 import { useUserInfoQuery } from "@/redux/Auth/auth.api"
 import { getSidebarItems } from "@/utils/getSidebarItems"
+import { ModeToggle } from "@/layout/ModeToggler"
 
 // This is sample data.
 
@@ -39,6 +40,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {userData?.data?.name || "Guest"}
           </span>
           <Button><Link to="/">Home</Link></Button>
+          <ModeToggle/>
+
         </div>
       </SidebarHeader>
       <SidebarContent>

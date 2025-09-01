@@ -1,4 +1,4 @@
-import { useAllAgentsQuery} from "@/redux/Auth/auth.api";
+import { useAllUsersQuery } from "@/redux/Auth/auth.api";
 import type { IUser } from "@/types/userType";
 import {
   Table,
@@ -21,16 +21,15 @@ import {
 } from "@/components/ui/pagination"
 import { useState } from "react";
 
-
-const AllAgents = () => {
+const AllUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data } = useAllAgentsQuery({ page: currentPage });
+  const { data } = useAllUsersQuery({ page: currentPage });
   const totalPage = data?.meta?.totalPage ?? 1;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">All Agents</h1>
+      <h1 className="text-2xl font-semibold mb-4">All Users</h1>
 
       <Table>
         <TableCaption>A list of all registered users.</TableCaption>
@@ -111,4 +110,4 @@ const AllAgents = () => {
   );
 };
 
-export default AllAgents;
+export default AllUsers;
