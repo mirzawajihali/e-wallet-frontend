@@ -1,4 +1,6 @@
 import App from "@/App";
+import { role } from "@/constants/role";
+import DashboardLayout from "@/layout/DashboardLayout";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
@@ -9,9 +11,15 @@ import NotFound from "@/pages/NotFound";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unauthorized";
+import type { TRole } from "@/types/authType";
+import { generateRoutes } from "@/utils/generateRoute";
+import { withAuth } from "@/utils/withAuth";
 
 
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
+import { adminSidebarItems } from "./adminSidebarItems";
+import { agentSidebarItems } from "./agentSidebarItems";
+import { userSidebarItems } from "./userSidebarItems";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +53,32 @@ const router = createBrowserRouter([
       },
     ],
   },
+    {
+        Component : withAuth(DashboardLayout, role.admin as TRole),
+        path : "/admin",
+        children : [
+            {index : true, element : <Navigate to="/admin/analytics"/>},
+          ...  generateRoutes(adminSidebarItems)  
+        ]
+    },
+    {
+        Component : withAuth(DashboardLayout, role.agent as TRole),
+        path : "/agent",
+        children : [
+            {index : true, element : <Navigate to="/agent/analytics"/>},
+          ...  generateRoutes(agentSidebarItems)  
+        ]
+    },
+    {
+        Component : withAuth(DashboardLayout, role.user as TRole),
+        path : "/user",
+        children : [
+            {index : true, element : <Navigate to="/user/my-wallet"/>},
+          ...  generateRoutes(userSidebarItems)  
+        ]
+    },
+    
+
   {
     Component: Register,
     path: "/register",
