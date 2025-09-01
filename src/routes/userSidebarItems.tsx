@@ -1,0 +1,52 @@
+
+
+import AddMoney from "@/pages/User/AddMoney";
+import MyWallet from "@/pages/User/MyWallet";
+import SendMoney from "@/pages/User/SendMoney";
+import Withdraw from "@/pages/User/Withdraw";
+import type { IsidebarItems } from "@/types/routingType";
+
+
+
+
+export const userSidebarItems : IsidebarItems[] = [
+    {
+      title: "Dashboard", 
+      
+      items: [
+        {
+          title: "My Wallet",
+          url: "my-wallet", // Remove /admin prefix since it's already in the parent route
+          component : MyWallet,
+        },
+        
+        
+      ],
+    },
+    {
+      title: "Transaction",
+    
+      items: [
+        {
+          title: "Add Money",
+          url: "add-money", 
+          component :  AddMoney,
+        },
+        {
+          title: "Withdraw Money",
+          url: "withdraw", 
+          component :  Withdraw,
+        },
+        {
+          title: "Send Money",
+          url: "send-money", 
+          component :  SendMoney,
+        },
+       
+        
+                   
+        
+      ],
+    },
+   
+  ]
