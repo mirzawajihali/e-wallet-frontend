@@ -5,8 +5,10 @@ import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
+import Unauthorized from "@/pages/Unauthorized";
 
 
 import { createBrowserRouter } from "react-router";
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
   {
     Component: Login,
     path: "/login",
+  },
+  {
+    Component: Unauthorized,
+    path: "/unauthorized",
+  },
+  {
+    Component: NotFound,
+    path: "/not-found",
   },
 
 

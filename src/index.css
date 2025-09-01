@@ -41,10 +41,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-
         :root {
             --radius: 0.625rem;
-            
+
             /* Improved color palette */
             --background: #F9F8E6; /* Lighter, softer cream */
             --foreground: #2D2B13; /* Much darker olive for better contrast */
@@ -79,7 +78,6 @@
             --sidebar-border: #D1CFB4;
             --sidebar-ring: #3E3C1C;
         }
-
 
 .dark {
   /* Dark mode - default shadcn black theme */
