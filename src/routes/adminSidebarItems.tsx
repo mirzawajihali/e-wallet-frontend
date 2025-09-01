@@ -1,6 +1,7 @@
 
 
 import AllAgents from "@/pages/Admin/AllAgents";
+import AllTransactions from "@/pages/Admin/AllTransactions";
 import AllUsers from "@/pages/Admin/AllUsers";
 import AllWallets from "@/pages/Admin/AllWallets";
 import Analytics from "@/pages/Admin/Analytics";
@@ -26,6 +27,12 @@ export const adminSidebarItems : IsidebarItems[] = [
           url: "all-wallets",
           component : AllWallets,
         },
+        {
+          title: "All Transactions",
+          url: "all-transactions",
+          component : AllTransactions,
+        },
+
         
         
       ],

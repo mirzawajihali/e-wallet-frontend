@@ -20,13 +20,27 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 
 const AllAgents = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data } = useAllAgentsQuery({ page: currentPage });
+  const { data , isLoading} = useAllAgentsQuery({ page: currentPage });
   const totalPage = data?.meta?.totalPage ?? 1;
+
+  if (isLoading) {
+      return (
+        <Card className="w-full">
+          <CardContent className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading transactions...</p>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
 
   return (
     <div className="p-6">
