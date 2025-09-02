@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   User, 
   Mail, 
@@ -23,6 +23,7 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import type { IUser } from '@/types/userType';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUserInfoQuery } from '@/redux/Auth/auth.api';
 
 // Mock user data - replace with actual API call
 const mockUser: IUser = {
@@ -49,6 +50,14 @@ const UserProfile: React.FC = () => {
   const [user, setUser] = useState<IUser>(mockUser);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<IUser>(mockUser);
+  const {data} = useUserInfoQuery(undefined);
+  
+  useEffect(() => {
+  if (data?.data?.email) {
+    setUser(data.data);
+  }
+}, [data]);
+
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -57,7 +66,7 @@ const UserProfile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      // TODO: Replace with actual API call
+    
       console.log('Saving user:', editedUser);
       setUser(editedUser);
       setIsEditing(false);

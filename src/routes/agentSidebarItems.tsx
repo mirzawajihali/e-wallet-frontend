@@ -1,9 +1,10 @@
 
 
 
-import Analytics from "@/pages/Admin/Analytics";
+
 import CashIn from "@/pages/Agent/CashIn";
 import CashOut from "@/pages/Agent/CashOut";
+import UserProfile from "@/pages/User/UserProfile";
 import type { IsidebarItems } from "@/types/routingType";
 
 
@@ -15,10 +16,10 @@ export const agentSidebarItems : IsidebarItems[] = [
       
       items: [
 
-        {
-          title: "Analytics",
-          url: "analytics",
-          component : Analytics,
+         {
+          title: "My Profile",
+          url: "user-profile", // Remove /admin prefix since it's already in the parent route
+          component : UserProfile,
         },
        
         
