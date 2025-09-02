@@ -3,26 +3,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreditCard, ArrowUpRight, ArrowDownLeft, History, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useMyWalletQuery } from "@/redux/Wallet/wallet.api";
 
 // Wallet data - in a real app this would come from props or API
-const walletData = {
-  "_id": "68b6faf07ad95b42eb106b15",
-  "userId": {
-    "_id": "68b6faef7ad95b42eb106b13",
-    "name": "M M Saklain",
-    "email": "saklain@gmail.com",
-    "role": "USER"
-  },
-  "balance": 50,
-  "isBlocked": false,
-  "createdAt": "2025-09-02T14:10:56.073Z",
-  "updatedAt": "2025-09-02T14:10:56.073Z",
-  "__v": 0
-};
+
 
 export default function MyWallet() {
-  // Format currency
- 
+  const {data, isLoading} = useMyWalletQuery(undefined);
+
+      if (isLoading) {
+          return (
+            <Card className="w-full">
+              <CardContent className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground"> Wallet Loading...</p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        }
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
@@ -42,16 +42,16 @@ export default function MyWallet() {
               Available Balance
             </CardDescription>
             <CardTitle className="text-4xl">
-              {walletData.balance}
+              {data?.data?.balance}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
               <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground">
-                {walletData.isBlocked ? "Blocked" : "Active"}
+                {data?.data?.isBlocked ? "Blocked" : "Active"}
               </Badge>
               <span className="text-sm text-primary-foreground/80">
-                Since {walletData.createdAt}
+                Since {data?.data?.createdAt}
               </span>
             </div>
           </CardContent>
@@ -71,10 +71,10 @@ export default function MyWallet() {
               <span>Withdraw</span>
             </Button>
           </Link>
-          <Link className="h-auto py-3 flex flex-col gap-2" to="/user/history">
+          <Link className="h-auto py-3 flex flex-col gap-2" to="/user/my-transactions">
           <Button className="h-full" variant="outline">
             <History className="h-5 w-5" />
-            <span>History</span>
+            <span>Transactions</span>
           </Button>
           </Link>
         </div>
@@ -95,15 +95,15 @@ export default function MyWallet() {
             <CardContent className="space-y-4">
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Name</div>
-                <div className="font-medium">{walletData.userId.name}</div>
+                <div className="font-medium">{data?.data?.userId.name}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Email</div>
-                <div className="font-medium">{walletData.userId.email}</div>
+                <div className="font-medium">{data?.data?.userId.email}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Role</div>
-                <div className="font-medium">{walletData.userId.role}</div>
+                <div className="font-medium">{data?.data?.userId.role}</div>
               </div>
             </CardContent>
           </Card>
@@ -119,19 +119,19 @@ export default function MyWallet() {
             <CardContent className="space-y-4">
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Wallet ID</div>
-                <div className="font-medium text-sm truncate">{walletData._id}</div>
+                <div className="font-medium text-sm truncate">{data?.data?._id}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">User ID</div>
-                <div className="font-medium text-sm truncate">{walletData.userId._id}</div>
+                <div className="font-medium text-sm truncate">{data?.data?.userId._id}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Created</div>
-                <div className="font-medium">{walletData.createdAt}</div>
+                <div className="font-medium">{data?.data?.createdAt}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-muted-foreground">Last Updated</div>
-                <div className="font-medium">{walletData.updatedAt}</div>
+                <div className="font-medium">{data?.data?.updatedAt}</div>
               </div>
             </CardContent>
           </Card>

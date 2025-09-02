@@ -3,9 +3,9 @@ import { baseApi } from "../bassApi";
 
 
 
-export const transactionApi = baseApi.injectEndpoints({
+export const walletApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    allTransactions: builder.query({
+    myWallet: builder.query({
       query: () => ({
         url: "/wallets/my-wallet",
         method: "GET",
@@ -16,4 +16,4 @@ export const transactionApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {  useAllTransactionsQuery } = transactionApi;
+export const {  useMyWalletQuery } = walletApi;

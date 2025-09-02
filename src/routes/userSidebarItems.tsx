@@ -1,6 +1,8 @@
 
 
 import AddMoney from "@/pages/User/AddMoney";
+import MyTransactions from "@/pages/User/MyTransactions";
+
 import MyWallet from "@/pages/User/MyWallet";
 import SendMoney from "@/pages/User/SendMoney";
 import UserProfile from "@/pages/User/UserProfile";
@@ -50,6 +52,11 @@ export const userSidebarItems : IsidebarItems[] = [
           title: "Send Money",
           url: "send-money", // Remove /admin prefix since it's already in the parent route
           component :  SendMoney,
+        },
+        {
+          title: "My Transactions",
+          url: "my-transactions", // Remove /admin prefix since it's already in the parent route
+          component :  MyTransactions,
         },
        
         
