@@ -4,6 +4,7 @@
 
 import CashIn from "@/pages/Agent/CashIn";
 import CashOut from "@/pages/Agent/CashOut";
+import MyTransactions from "@/pages/User/MyTransactions";
 import UserProfile from "@/pages/User/UserProfile";
 import type { IsidebarItems } from "@/types/routingType";
 
@@ -39,6 +40,11 @@ export const agentSidebarItems : IsidebarItems[] = [
           title: "Cash Out",
           url: "cash-out", // Remove /admin prefix since it's already in the parent route
           component :  CashOut,
+        },
+        {
+          title: "Transactions",
+          url: "my-transactions", // Remove /admin prefix since it's already in the parent route
+          component :  MyTransactions,
         },
         
                    
