@@ -5,7 +5,7 @@ import AllTransactions from "@/pages/Admin/AllTransactions";
 import AllUsers from "@/pages/Admin/AllUsers";
 import AllWallets from "@/pages/Admin/AllWallets";
 import Analytics from "@/pages/Admin/Analytics";
-import PromoteToAgent from "@/pages/Admin/PromoteToAgent";
+
 import type { IsidebarItems } from "@/types/routingType";
 
 
@@ -46,14 +46,7 @@ export const adminSidebarItems : IsidebarItems[] = [
           url: "all-users", 
           component :  AllUsers,
         },
-        {
-          title: "Promote To Agent",
-          url: "promote-to-agent", 
-          component :  PromoteToAgent,
-        },
-        
-                   
-        
+       
       ],
     },
     {

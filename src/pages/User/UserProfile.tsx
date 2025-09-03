@@ -24,9 +24,11 @@ import { toast } from 'sonner';
 import type { IUser } from '@/types/userType';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserInfoQuery, useUpdateUserMutation } from '@/redux/Auth/auth.api';
+import { useMyTransactionsQuery } from '@/redux/Transaction/transaction.api';
 
 const UserProfile: React.FC = () => {
   const { data, isLoading, isError } = useUserInfoQuery(undefined);
+  const {data : transactions} = useMyTransactionsQuery(undefined)
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
   
   const [user, setUser] = useState<IUser | null>(null);
@@ -205,7 +207,7 @@ const UserProfile: React.FC = () => {
 
               {/* Account Stats */}
               <div className="text-center pt-4 border-t">
-                <div className="text-2xl font-bold text-primary">{user.transactions?.length || 0}</div>
+                <div className="text-2xl font-bold text-primary">{transactions?.meta?.total}</div>
                 <div className="text-sm text-muted-foreground">Total Transactions</div>
               </div>
             </CardContent>

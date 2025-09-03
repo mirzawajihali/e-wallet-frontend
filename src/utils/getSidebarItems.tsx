@@ -10,7 +10,7 @@ export const getSidebarItems = (userRole : TRole) =>{
 
     switch(userRole){
         case role.admin:
-            return [... adminSidebarItems, ...userSidebarItems , ...agentSidebarItems];
+            return [... adminSidebarItems];
         case role.agent:
             return [... agentSidebarItems];
         case role.user:

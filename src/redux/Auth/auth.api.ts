@@ -86,7 +86,22 @@ export const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["USER"], // This will trigger refetch of userInfo
     }),
+
+    promoteToAgent: builder.mutation({
+      query: (userId) => ({
+        url: `/users/promote-to-agent/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["USER"],
+    }),
+    promoteToAdmin: builder.mutation({
+      query: (userId) => ({
+        url: `/users/promote-to-admin/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["USER"],
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery, useAllUsersQuery, useAllAgentsQuery, useUpdateUserMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery, useAllUsersQuery, useAllAgentsQuery, useUpdateUserMutation, usePromoteToAdminMutation, usePromoteToAgentMutation } = authApi;
