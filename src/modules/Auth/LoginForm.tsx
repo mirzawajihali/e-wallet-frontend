@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/Auth/auth.api";
-// import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import { tokenStorage } from "@/axios/axios";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 
 import { Link, useNavigate } from "react-router";
@@ -39,17 +39,28 @@ export function LoginForm({
     try {
       const res = await login(userInfo).unwrap();
       console.log('✅ Login response:', res);
+      console.log('📊 Response data:', res.data);
       
       if(res.success){
-        toast.success("Login Successful");
-        
-        // If backend sends token in response data, you can manually set it in cookies
+        // Store tokens from the response
         if (res.data?.accessToken) {
-          console.log('🍪 Setting access token in cookies manually');
-          document.cookie = `accessToken=${res.data.accessToken}; path=/; SameSite=Lax`;
+          tokenStorage.setAccessToken(res.data.accessToken);
+          console.log('🔑 Access token stored');
+        }
+        if (res.data?.refreshToken) {
+          tokenStorage.setRefreshToken(res.data?.refreshToken);
+          console.log('🔑 Refresh token stored');
         }
         
-        navigate("/"); // Navigate to dashboard or home after login
+        toast.success("Login Successful");
+        
+        // Navigate immediately since tokens are now stored
+        const targetRoute = res.data?.user?.role === 'ADMIN' ? '/admin' 
+                         : res.data?.user?.role === 'AGENT' ? '/agent' 
+                         : '/user';
+        
+        console.log('🚀 Navigating to:', targetRoute);
+        navigate(targetRoute);
       } else {
         toast.error(res.message || "Login failed");
       }

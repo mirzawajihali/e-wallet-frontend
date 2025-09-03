@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { useRegisterMutation } from "@/redux/Auth/auth.api";
+import { tokenStorage } from "@/axios/axios";
 
 const registerSchema = z
   .object({
@@ -70,8 +71,26 @@ export function RegisterForm({
     try {
       const result = await register(userInfo).unwrap();
       console.log('✅ Registration successful:', result);
-      toast.success("User created successfully");
-      navigate("/");
+      
+      // Store tokens from the response
+      if (result.data?.accessToken) {
+        tokenStorage.setAccessToken(result.data.accessToken);
+        console.log('🔑 Access token stored after registration');
+      }
+      if (result.data?.refreshToken) {
+        tokenStorage.setRefreshToken(result.data.refreshToken);
+        console.log('🔑 Refresh token stored after registration');
+      }
+      
+      toast.success("User created successfully and logged in");
+      
+      // Navigate immediately since tokens are now stored
+      const targetRoute = result.data?.user?.role === 'ADMIN' ? '/admin' 
+                       : result.data?.user?.role === 'AGENT' ? '/agent' 
+                       : '/user';
+      
+      console.log('🚀 Navigating to:', targetRoute);
+      navigate(targetRoute);
     } catch (error: unknown) {
       console.error('❌ Registration failed:', error);
       

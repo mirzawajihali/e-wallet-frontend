@@ -44,9 +44,15 @@ const axiosBaseQuery =
       console.error('❌ AxiosBaseQuery error:', {
         status: err.response?.status,
         data: err.response?.data,
-        config: err.config,
+        url: url,
+        method: method,
         message: err.message,
       });
+      
+      // Don't log 403 errors for /users/me as they're expected when not authenticated
+      if (!(err.response?.status === 403 && url === '/users/me')) {
+        console.error('Unexpected error:', err);
+      }
       
       return {
         error: {

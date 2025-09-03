@@ -15,6 +15,7 @@ export const authApi = baseApi.injectEndpoints({
       transformResponse: (response: AuthResponse) => {
         return response;
       },
+      invalidatesTags: ["USER"], // This will trigger refetch of userInfo
     }),
     logout: builder.mutation({
       query: () => ({
@@ -34,6 +35,7 @@ export const authApi = baseApi.injectEndpoints({
         
         return response;
       },
+      invalidatesTags: ["USER"], // This will trigger refetch of userInfo
     }),
 
     userInfo : builder.query({
@@ -41,8 +43,9 @@ export const authApi = baseApi.injectEndpoints({
         url: "/users/me",
         method: "GET",
       }),
-
-       providesTags: ["USER"],
+      providesTags: ["USER"],
+      // Skip the query if we're on login/register pages or if there's no potential for auth
+      forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
     }),
     allUsers : builder.query({
       query: (params) => ({
