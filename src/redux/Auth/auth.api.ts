@@ -1,5 +1,14 @@
 import type { AuthResponse, LoginCredentials, RegisterData } from "@/types/authType";
+import type { IUser } from "@/types/userType";
 import { baseApi } from "../bassApi";
+
+// Response type for user update
+interface UserUpdateResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: IUser;
+}
 
 
 
@@ -64,8 +73,20 @@ export const authApi = baseApi.injectEndpoints({
       }),
 
        providesTags: ["USER"],
-    })
+    }),
+    
+    updateUser: builder.mutation<UserUpdateResponse, Partial<IUser>>({
+      query: (userData) => ({
+        url: "/users/me", // Use a self-update endpoint
+        method: "PATCH",
+        data: userData,
+      }),
+      transformResponse: (response: UserUpdateResponse) => {
+        return response;
+      },
+      invalidatesTags: ["USER"], // This will trigger refetch of userInfo
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery, useAllUsersQuery, useAllAgentsQuery } = authApi;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUserInfoQuery, useAllUsersQuery, useAllAgentsQuery, useUpdateUserMutation } = authApi;

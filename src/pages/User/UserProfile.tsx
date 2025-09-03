@@ -23,40 +23,45 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import type { IUser } from '@/types/userType';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useUserInfoQuery } from '@/redux/Auth/auth.api';
-
-// Mock user data - replace with actual API call
-const mockUser: IUser = {
-  _id: "507f1f77bcf86cd799439011",
-  name: "John Doe",
-  email: "john.doe@example.com",
-  phone: "+1 (555) 123-4567",
-  picture: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-  address: "123 Main Street, New York, NY 10001",
-  isDeleted: false,
-  isActive: "ACTIVE",
-  isVarified: true,
-  auths: [
-    { provider: "google", providerId: "google_123456", email: "john.doe@gmail.com" },
-    { provider: "local", providerId: "local_789012" }
-  ],
-  role: "USER",
-  transactions: ["trans_1", "trans_2", "trans_3"],
-  createdAt: "2024-01-15T08:30:00Z",
-  updatedAt: "2024-08-30T14:22:00Z"
-};
+import { useUserInfoQuery, useUpdateUserMutation } from '@/redux/Auth/auth.api';
 
 const UserProfile: React.FC = () => {
-  const [user, setUser] = useState<IUser>(mockUser);
+  const { data, isLoading, isError } = useUserInfoQuery(undefined);
+  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+  
+  const [user, setUser] = useState<IUser | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState<IUser>(mockUser);
-  const {data} = useUserInfoQuery(undefined);
+  const [editedUser, setEditedUser] = useState<IUser | null>(null);
   
   useEffect(() => {
-  if (data?.data?.email) {
-    setUser(data.data);
+    if (data?.data) {
+      setUser(data.data);
+      setEditedUser(data.data);
+    }
+  }, [data]);
+
+  // Handle loading and error states
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
   }
-}, [data]);
+
+  if (isError || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="text-center py-8">
+          <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">Error Loading Profile</h2>
+          <p className="text-muted-foreground">Unable to load your profile information. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
 
 
   const handleEdit = () => {
@@ -65,15 +70,38 @@ const UserProfile: React.FC = () => {
   };
 
   const handleSave = async () => {
-    try {
+    if (!editedUser) return;
     
-      console.log('Saving user:', editedUser);
-      setUser(editedUser);
-      setIsEditing(false);
-      toast.success("Profile updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update profile. Please try again.");
+    // Basic validation
+    if (!editedUser.name?.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+    
+    try {
+      // Only send the fields that can be updated
+      const updateData = {
+        name: editedUser.name.trim(),
+        phone: editedUser.phone?.trim() || '',
+        address: editedUser.address?.trim() || '',
+      };
+
+      console.log('Updating user with data:', updateData);
+      const result = await updateUser(updateData).unwrap();
+      
+      if (result.success) {
+        // Update local state with the returned data
+        setUser(result.data);
+        setEditedUser(result.data);
+        setIsEditing(false);
+        toast.success(result.message || "Profile updated successfully!");
+        // The data will be automatically refetched due to invalidatesTags
+      }
+    } catch (error: unknown) {
       console.error('Error updating profile:', error);
+      const apiError = error as { data?: { message?: string } };
+      const errorMessage = apiError?.data?.message || "Failed to update profile. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
@@ -83,10 +111,15 @@ const UserProfile: React.FC = () => {
   };
 
   const handleInputChange = (field: keyof IUser, value: string) => {
-    setEditedUser(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    if (!editedUser) return;
+    
+    setEditedUser(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        [field]: value
+      };
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -194,11 +227,20 @@ const UserProfile: React.FC = () => {
                 </Button>
               ) : (
                 <div className="flex gap-2">
-                  <Button onClick={handleSave} size="sm">
-                    <Save className="w-4 h-4 mr-2" />
-                    Save
+                  <Button onClick={handleSave} size="sm" disabled={isUpdating}>
+                    {isUpdating ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save
+                      </>
+                    )}
                   </Button>
-                  <Button onClick={handleCancel} variant="outline" size="sm">
+                  <Button onClick={handleCancel} variant="outline" size="sm" disabled={isUpdating}>
                     <X className="w-4 h-4 mr-2" />
                     Cancel
                   </Button>
@@ -214,7 +256,7 @@ const UserProfile: React.FC = () => {
                     {isEditing ? (
                       <Input
                         id="name"
-                        value={editedUser.name}
+                        value={editedUser?.name || ''}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Enter your full name"
                       />
@@ -242,7 +284,7 @@ const UserProfile: React.FC = () => {
                     {isEditing ? (
                       <Input
                         id="phone"
-                        value={editedUser.phone || ''}
+                        value={editedUser?.phone || ''}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="Enter your phone number"
                       />
@@ -259,7 +301,7 @@ const UserProfile: React.FC = () => {
                     {isEditing ? (
                       <Input
                         id="address"
-                        value={editedUser.address || ''}
+                        value={editedUser?.address || ''}
                         onChange={(e) => handleInputChange('address', e.target.value)}
                         placeholder="Enter your address"
                       />
