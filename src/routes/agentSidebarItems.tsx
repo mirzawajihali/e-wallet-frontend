@@ -18,7 +18,7 @@ export const agentSidebarItems : IsidebarItems[] = [
 
          {
           title: "My Profile",
-          url: "user-profile", // Remove /admin prefix since it's already in the parent route
+          url: "agent-profile", 
           component : UserProfile,
         },
        

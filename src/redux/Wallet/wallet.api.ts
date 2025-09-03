@@ -1,8 +1,5 @@
 import { baseApi } from "../bassApi";
 
-
-
-
 export const walletApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     myWallet: builder.query({
@@ -12,8 +9,21 @@ export const walletApi = baseApi.injectEndpoints({
       }),
 
        providesTags: ["WALLET"],
-    })
+    }),
+
+     sendMoney: builder.mutation({
+          query: (sendMoneyData) => ({
+            url: "/wallets/send-money",
+            method: "POST",
+            data: sendMoneyData,
+          }),
+          transformResponse: (response) => {
+            return response;
+          },
+          invalidatesTags: ["WALLET"], 
+
   }),
+})
 });
 
-export const {  useMyWalletQuery } = walletApi;
+export const { useMyWalletQuery, useSendMoneyMutation } = walletApi;

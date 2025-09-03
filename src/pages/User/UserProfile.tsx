@@ -112,7 +112,9 @@ const UserProfile: React.FC = () => {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">User Profile</h1>
+        {user?.role == "USER" ? <h1 className="text-3xl font-bold">User Profile</h1> : <h1 className="text-3xl font-bold">Agent Profile</h1>}
+
+        
         <p className="text-muted-foreground">Manage your account information and preferences</p>
       </div>
 

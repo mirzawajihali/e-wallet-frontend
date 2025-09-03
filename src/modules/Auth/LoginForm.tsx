@@ -34,7 +34,7 @@ export function LoginForm({
       password: data.password,
     };
     
-    console.log('🔄 Attempting login with:', { email: userInfo.email });
+    
     
     try {
       const res = await login(userInfo).unwrap();

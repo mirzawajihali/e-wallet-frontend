@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -30,6 +37,9 @@ const registerSchema = z
       })
       .max(50),
     email: z.email(),
+    role: z.enum(["USER", "AGENT"], {
+      required_error: "Please select a role",
+    }),
     password: z.string().min(8, { error: "Password is too short" }),
     confirmPassword: z
       .string()
@@ -54,6 +64,7 @@ export function RegisterForm({
     defaultValues: {
       name: "",
       email: "",
+      role: "USER", // Default to USER role
       password: "",
       confirmPassword: "",
     },
@@ -63,6 +74,7 @@ export function RegisterForm({
     const userInfo  = {
       name: data.name,
       email: data.email,
+      role: data.role,
       password: data.password,
     };
 
@@ -151,6 +163,30 @@ export function RegisterForm({
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account Type</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your account type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="USER">User - Send/receive money</SelectItem>
+                      <SelectItem value="AGENT">Agent - Provide cash-in/cash-out services</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Choose USER for personal use or AGENT to provide financial services.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
