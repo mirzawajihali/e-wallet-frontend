@@ -10,6 +10,14 @@ export const walletApi = baseApi.injectEndpoints({
 
        providesTags: ["WALLET"],
     }),
+    allWallet: builder.query({
+      query: () => ({
+        url: "/wallets/all",
+        method: "GET",
+      }),
+
+       providesTags: ["WALLET"],
+    }),
 
      sendMoney: builder.mutation({
           query: (sendMoneyData) => ({
@@ -75,5 +83,5 @@ export const walletApi = baseApi.injectEndpoints({
 });
 
 export const { useMyWalletQuery, useSendMoneyMutation, useWithdrawMutation, useAddMoneyMutation ,
-  useCashInMutation, useCashOutMutation
+  useCashInMutation, useCashOutMutation, useAllWalletQuery
 } = walletApi;
