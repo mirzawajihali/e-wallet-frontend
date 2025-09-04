@@ -1,14 +1,9 @@
 import type { AuthResponse, LoginCredentials, RegisterData } from "@/types/authType";
-import type { IUser } from "@/types/userType";
+import type { IUser, IUserUpdateResponse } from "@/types/userType";
 import { baseApi } from "../bassApi";
 
 // Response type for user update
-interface UserUpdateResponse {
-  success: boolean;
-  statusCode: number;
-  message: string;
-  data: IUser;
-}
+
 
 
 
@@ -53,8 +48,8 @@ export const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["USER"],
-      // Skip the query if we're on login/register pages or if there's no potential for auth
-      forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
+      // Skip the query if there's no access token
+      skip: () => !localStorage.getItem('accessToken'),
     }),
     allUsers : builder.query({
       query: (params) => ({
@@ -75,13 +70,13 @@ export const authApi = baseApi.injectEndpoints({
        providesTags: ["USER"],
     }),
     
-    updateUser: builder.mutation<UserUpdateResponse, Partial<IUser>>({
+    updateUser: builder.mutation<IUserUpdateResponse, Partial<IUser>>({
       query: (userData) => ({
         url: "/users/me", // Use a self-update endpoint
         method: "PATCH",
         data: userData,
       }),
-      transformResponse: (response: UserUpdateResponse) => {
+      transformResponse: (response: IUserUpdateResponse) => {
         return response;
       },
       invalidatesTags: ["USER"], // This will trigger refetch of userInfo
@@ -100,6 +95,16 @@ export const authApi = baseApi.injectEndpoints({
         method: "PATCH",
       }),
       invalidatesTags: ["USER"],
+    }),
+
+     google : builder.query({
+      query: () => ({
+        url: "/auth/google",
+        method: "GET",
+        
+      }),
+
+       providesTags: ["USER"],
     }),
   }),
 });

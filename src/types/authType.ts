@@ -7,6 +7,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export interface AuthResponse {
@@ -20,7 +21,10 @@ export interface AuthResponse {
       role?: string;
     };
     accessToken?: string;
+    refreshToken?: string;
   };
 }
+
+
 
 export type TRole  = "SUPER_ADMIN" | "ADMIN" | "USER";

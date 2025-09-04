@@ -27,23 +27,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRegisterMutation } from "@/redux/Auth/auth.api";
 import { tokenStorage } from "@/axios/axios";
+import config from "@/config/config";
 
 const registerSchema = z
   .object({
     name: z
       .string()
       .min(3, {
-        error: "Name is too short",
+        message: "Name is too short",
       })
       .max(50),
     email: z.email(),
     role: z.enum(["USER", "AGENT"], {
-      required_error: "Please select a role",
+      message: "Please select a role",
     }),
-    password: z.string().min(8, { error: "Password is too short" }),
+    password: z.string().min(8, { message: "Password is too short" }),
     confirmPassword: z
       .string()
-      .min(8, { error: "Confirm Password is too short" }),
+      .min(8, { message: "Confirm Password is too short" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",
@@ -102,7 +103,11 @@ export function RegisterForm({
                        : '/user';
       
       console.log('🚀 Navigating to:', targetRoute);
-      navigate(targetRoute);
+      
+      // Add a small delay to ensure tokens are properly stored and state is updated
+      setTimeout(() => {
+        navigate(targetRoute, { replace: true });
+      }, 100);
     } catch (error: unknown) {
       console.error('❌ Registration failed:', error);
       
@@ -118,6 +123,16 @@ export function RegisterForm({
         toast.error("Registration failed. Please try again.");
       }
     }
+  };
+
+
+  const handleGoogleSignup = () => {
+    // Get current page to redirect back after signup
+    const currentPath = window.location.pathname;
+    const backendUrl = config.baseUrl;
+    
+    // Redirect to your existing Passport.js Google OAuth route
+    window.location.href = `${backendUrl}/auth/google?redirect=${encodeURIComponent(currentPath)}`;
   };
 
   return (
@@ -245,6 +260,7 @@ export function RegisterForm({
           type="button"
           variant="outline"
           className="w-full cursor-pointer"
+           onClick={handleGoogleSignup}
         >
           <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
             <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

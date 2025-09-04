@@ -7,7 +7,18 @@ import { Navigate } from "react-router-dom";
 export const withAuth = (Component : ComponentType, requiredRole ? : TRole) => {
     return function AuthWrapper() {
         const {data, isLoading, error} = useUserInfoQuery(undefined);
-        console.log('withAuth state:', { data, isLoading, error, hasUser: !!data?.data?.email });
+        
+        // Check if user has tokens in localStorage
+        const hasTokens = localStorage.getItem('accessToken') && localStorage.getItem('refreshToken');
+        
+        console.log('withAuth state:', { 
+            data, 
+            isLoading, 
+            error, 
+            hasUser: !!data?.data?.email,
+            hasTokens,
+            currentPath: window.location.pathname
+        });
 
         // Show loading while checking authentication
         if(isLoading){
@@ -17,9 +28,18 @@ export const withAuth = (Component : ComponentType, requiredRole ? : TRole) => {
         }
 
         // If there's an error (like 401/403) or no user data, redirect to login
-        if(error || !data?.data?.email){
-            console.log('🚫 Authentication failed, redirecting to login');
+        // But only if we don't have tokens (to avoid redirect loops)
+        if((error || !data?.data?.email) && !hasTokens){
+            console.log('🚫 Authentication failed and no tokens, redirecting to login');
             return <Navigate to="/login" replace />;
+        }
+
+        // If we have tokens but still getting errors, wait a bit more for the query to resolve
+        if((error || !data?.data?.email) && hasTokens){
+            console.log('⏳ Have tokens but query failing, waiting...');
+            return <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+            </div>;
         }
 
         // Check role authorization

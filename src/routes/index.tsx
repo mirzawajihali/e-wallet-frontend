@@ -20,6 +20,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { agentSidebarItems } from "./agentSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
+import GoogleCallback from "@/modules/Auth/GoogleCallback";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
     Component: NotFound,
     path: "/not-found",
   },
+  {
+  path: '/auth/google/callback',
+  element: <GoogleCallback />
+}
 
 
 ]);

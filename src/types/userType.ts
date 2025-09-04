@@ -26,6 +26,13 @@ export interface IUser {
   updatedAt?: string;
 }
 
+export interface IUserUpdateResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: IUser;
+}
+
 
 export interface IWallet {
   _id: string;

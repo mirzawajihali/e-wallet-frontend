@@ -14,21 +14,34 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/Auth/auth.api";
 import { tokenStorage } from "@/axios/axios";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import config from "@/config/config";
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
+});
 
 export function LoginForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>){
   const navigate = useNavigate();
-  const form = useForm();
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const [login] = useLoginMutation();
 
 
-  const onSubmit : SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const userInfo = {
       email: data.email,
       password: data.password,
@@ -60,7 +73,11 @@ export function LoginForm({
                          : '/user';
         
         console.log('🚀 Navigating to:', targetRoute);
-        navigate(targetRoute);
+        
+        // Add a small delay to ensure tokens are properly stored and state is updated
+        setTimeout(() => {
+          navigate(targetRoute, { replace: true });
+        }, 100);
       } else {
         toast.error(res.message || "Login failed");
       }
@@ -79,6 +96,16 @@ export function LoginForm({
         toast.error("Login failed. Please try again.");
       }
     }
+  };
+
+    const handleGoogleLogin = () => {
+    // Get current page to redirect back after login
+    const currentPath = window.location.pathname;
+    const backendUrl = config.baseUrl
+    
+    // Redirect to your existing Passport.js Google OAuth route
+    // Your backend already handles the redirect query parameter
+    window.location.href = `${backendUrl}/auth/google?redirect=${encodeURIComponent(currentPath)}`;
   };
 
   return (
@@ -152,6 +179,7 @@ export function LoginForm({
           type="button"
           variant="outline"
           className="w-full cursor-pointer"
+           onClick={handleGoogleLogin}
         >
           <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
             <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
