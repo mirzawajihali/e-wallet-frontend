@@ -11,9 +11,10 @@ export const walletApi = baseApi.injectEndpoints({
        providesTags: ["WALLET"],
     }),
     allWallet: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/wallets/all",
         method: "GET",
+        params: params
       }),
 
        providesTags: ["WALLET"],
@@ -79,9 +80,25 @@ export const walletApi = baseApi.injectEndpoints({
           invalidatesTags: ["WALLET"], 
 
   }),
+   blockWallet: builder.mutation({
+      query: (walletId) => ({
+        url: `/wallets/block/${walletId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["WALLET"],
+    }),
+
+   unblockWallet: builder.mutation({
+      query: (walletId) => ({
+        url: `/wallets/unblock/${walletId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["WALLET"],
+    }),
+   
 })
 });
 
 export const { useMyWalletQuery, useSendMoneyMutation, useWithdrawMutation, useAddMoneyMutation ,
-  useCashInMutation, useCashOutMutation, useAllWalletQuery
+  useCashInMutation, useCashOutMutation, useAllWalletQuery, useBlockWalletMutation, useUnblockWalletMutation
 } = walletApi;
