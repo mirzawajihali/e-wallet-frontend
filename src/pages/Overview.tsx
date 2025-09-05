@@ -40,8 +40,8 @@ const Overview = () => {
         'Send money to other users instantly',
         'View transaction history and analytics',
         'Update profile and security settings',
-        'Real-time balance tracking',
-        'Transaction notifications'
+        'Real-time balance tracking'
+       
       ]
     },
     {
@@ -53,10 +53,8 @@ const Overview = () => {
         'All user features included',
         'Provide cash-in services to users',
         'Offer cash-out services to users',
-        'Agent dashboard with earnings tracking',
-        'Commission-based income model',
+        'Agent dashboard',
         'Transaction history for agent services',
-        'Customer management tools',
         'Service area management'
       ]
     },
@@ -72,8 +70,7 @@ const Overview = () => {
         'Block/unblock user wallets',
         'Transaction oversight and statistics',
         'Agent performance tracking',
-        'System health monitoring',
-        'Platform-wide settings control'
+        
       ]
     }
   ];
@@ -445,13 +442,9 @@ const Overview = () => {
                 Try Live Demo <ExternalLink className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/about">
-                Learn More About the Developer
-              </Link>
-            </Button>
+             
           </div>
-        </div>
+        </div>  
       </section>
     </div>
   );

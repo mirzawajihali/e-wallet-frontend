@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Globe, Zap, UserCheck } from "lucide-react";
 
@@ -128,27 +128,7 @@ const TeamDetails = () => {
             </CardContent>
           </Card>
 
-          {/* Join Us CTA */}
-          <div className="text-center">
-            <Card className="border-0 bg-gradient-to-r from-primary to-accent">
-              <CardContent className="p-10">
-                <h3 className="text-2xl font-bold text-primary-foreground mb-4">
-                  Want to Join Our Team?
-                </h3>
-                <p className="text-primary-foreground/80 mb-6 max-w-2xl mx-auto">
-                  We're always looking for talented Bangladeshi professionals who share our vision
-                  for financial innovation and inclusion.
-                </p>
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="bg-background text-foreground hover:bg-background/90"
-                >
-                  View Open Positions
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+         
         </div>
       </div>
     </section>

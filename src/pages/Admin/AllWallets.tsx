@@ -145,11 +145,11 @@ const AllWallets = () => {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">All Wallets</h1>
+    <div className="p-6" data-tour="admin-wallets">
+      <h1 className="text-2xl font-semibold mb-6" data-tour="wallets-title">All Wallets</h1>
 
       {/* Search and Filter Section */}
-      <Card className="mb-6">
+      <Card className="mb-6" data-tour="wallets-filters">
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search Input */}
@@ -160,11 +160,12 @@ const AllWallets = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
+                data-tour="wallets-search"
               />
             </div>
 
             {/* Status Filter Buttons */}
-            <div className="flex gap-2">
+            <div className="flex gap-2" data-tour="wallets-status-filter">
               {(['ALL', 'ACTIVE', 'BLOCKED'] as const).map((status) => (
                 <Button
                   key={status}
@@ -196,7 +197,7 @@ const AllWallets = () => {
         </CardContent>
       </Card>
 
-      <Table>
+      <Table data-tour="wallets-table">
         <TableCaption>A list of all user wallets.</TableCaption>
         <TableHeader>
           <TableRow>

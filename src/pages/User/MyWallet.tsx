@@ -25,7 +25,7 @@ export default function MyWallet() {
         }
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
+    <div className="container mx-auto p-4 max-w-4xl" data-tour="user-wallet">
       <div className="flex flex-col gap-6">
         {/* Header */}
         <div className="flex flex-col gap-2">
@@ -36,7 +36,7 @@ export default function MyWallet() {
         </div>
 
         {/* Balance Card */}
-        <Card className="bg-primary text-primary-foreground">
+        <Card className="bg-primary text-primary-foreground" data-tour="wallet-balance-card">
           <CardHeader className="pb-3">
             <CardDescription className="text-primary-foreground/80">
               Available Balance

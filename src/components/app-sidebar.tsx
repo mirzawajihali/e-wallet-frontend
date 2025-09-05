@@ -32,18 +32,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
+    <Sidebar {...props} data-tour="sidebar">
+      <SidebarHeader data-tour="sidebar-header">
         <div className="flex flex-col items-center gap-3 px-4 py-2 rounded-2xl  shadow-sm">
   
  <div className="flex flex-1 items-center gap-2">
-   <Button variant="secondary" size="sm">
+   <Button variant="secondary" size="sm" data-tour="home-button">
     <Link to="/">Home</Link>
   </Button>
   <ModeToggle />
  </div>
 
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-2" data-tour="user-info">
     <User className="h-6 w-6 text-muted-foreground" />
     <span className="text-sm font-semibold text-muted-foreground">
       {userData?.data?.name || "Guest"}
@@ -51,8 +51,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   </div>
 </div>
       </SidebarHeader>
-      <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
+      <SidebarContent data-tour="sidebar-content">{/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
@@ -60,8 +59,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild >
-                      <Link to={item.url}>{item.title}</Link>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to={item.url} 
+                        data-tour={
+                          item.url === 'my-wallet' ? 'my-wallet' :
+                          item.url === 'user-profile' ? 'user-profile' :
+                          item.url === 'add-money' ? 'add-money' :
+                          item.url === 'withdraw' ? 'withdraw' :
+                          item.url === 'send-money' ? 'send-money' :
+                          item.url === 'my-transactions' ? 'my-transactions' :
+                          item.url === 'analytics' ? 'analytics' :
+                          item.url === 'all-wallets' ? 'all-wallets' :
+                          item.url === 'all-transactions' ? 'all-transactions' :
+                          item.url === 'all-users' ? 'all-users' :
+                          item.url === 'all-agent' ? 'all-agents' :
+                          item.url === 'agent-profile' ? 'agent-profile' :
+                          item.url === 'cash-in' ? 'cash-in' :
+                          item.url === 'cash-out' ? 'cash-out' :
+                          undefined
+                        }
+                      >
+                        {item.title}
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
