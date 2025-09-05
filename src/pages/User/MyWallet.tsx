@@ -8,6 +8,7 @@ import { useMyWalletQuery } from "@/redux/Wallet/wallet.api";
 // Wallet data - in a real app this would come from props or API
 
 
+
 export default function MyWallet() {
   const {data, isLoading} = useMyWalletQuery(undefined);
 

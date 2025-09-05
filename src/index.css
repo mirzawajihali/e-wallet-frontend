@@ -40,44 +40,61 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+:root {
+  --radius: 0.625rem;
 
-        :root {
-            --radius: 0.625rem;
+  /* Base Backgrounds */
+  --background: #FAF9F4;         /* Slightly warmer, softer off-white */
+  --foreground: #1E1C12;         /* Deep earthy brown for strong contrast */
 
-            /* Improved color palette */
-            --background: #F9F8E6; /* Lighter, softer cream */
-            --foreground: #2D2B13; /* Much darker olive for better contrast */
-            --card: #F5F3DC; /* Very light cream for cards */
-            --card-foreground: #2D2B13;
-            --popover: #F5F3DC;
-            --popover-foreground: #2D2B13;
-            --primary: #3E3C1C; /* Darker olive for primary elements */
-            --primary-foreground: #F9F8E6;
-            --secondary: #E8E6CC; /* Soft secondary color */
-            --secondary-foreground: #2D2B13;
-            --muted: #E8E6CC;
-            --muted-foreground: #5A5845; /* Better muted text contrast */
-            --accent: #6A684A; /* Professional accent color */
-            --accent-foreground: #F9F8E6;
-            --destructive: #C1520E; /* More professional orange/red */
-            --destructive-foreground: #F9F8E6;
-            --border: #D1CFB4; /* Subtle border color */
-            --input: #F5F3DC;
-            --ring: #3E3C1C;
-            --chart-1: #3E3C1C;
-            --chart-2: #6A684A;
-            --chart-3: #9B9966;
-            --chart-4: #D1CFB4;
-            --chart-5: #C1520E;
-            --sidebar: #F5F3DC;
-            --sidebar-foreground: #2D2B13;
-            --sidebar-primary: #3E3C1C;
-            --sidebar-primary-foreground: #F9F8E6;
-            --sidebar-accent: #6A684A;
-            --sidebar-accent-foreground: #F9F8E6;
-            --sidebar-border: #D1CFB4;
-            --sidebar-ring: #3E3C1C;
-        }
+  /* Cards & Surfaces */
+  --card: #F6F4E8;               /* Subtle cream */
+  --card-foreground: #1E1C12;
+  --popover: #F6F4E8;
+  --popover-foreground: #1E1C12;
+
+  /* Primary Theme */
+  --primary: #3D3B1E;            /* Olive-dark brown (anchor color) */
+  --primary-foreground: #FAF9F4;
+
+  /* Secondary Theme */
+  --secondary: #E9E7D2;          /* Softer beige-olive */
+  --secondary-foreground: #2D2B13;
+
+  /* Muted / Subtle */
+  --muted: #E9E7D2;
+  --muted-foreground: #5A5746;
+
+  /* Accent */
+  --accent: #767347;             /* Refined olive accent */
+  --accent-foreground: #FAF9F4;
+
+  /* Destructive */
+  --destructive: #B5441C;        /* Slightly deeper burnt orange */
+  --destructive-foreground: #FAF9F4;
+
+  /* Borders & Inputs */
+  --border: #D6D3B8;             /* Warmer subtle border */
+  --input: #F6F4E8;
+  --ring: #3D3B1E;
+
+  /* Data Visualization (charts) */
+  --chart-1: #3D3B1E;            /* Primary anchor */
+  --chart-2: #767347;            /* Olive accent */
+  --chart-3: #9C9A72;            /* Muted olive beige */
+  --chart-4: #D6D3B8;            /* Light beige */
+  --chart-5: #B5441C;            /* Accent red/orange */
+
+  /* Sidebar */
+  --sidebar: #F6F4E8;
+  --sidebar-foreground: #1E1C12;
+  --sidebar-primary: #3D3B1E;
+  --sidebar-primary-foreground: #FAF9F4;
+  --sidebar-accent: #767347;
+  --sidebar-accent-foreground: #FAF9F4;
+  --sidebar-border: #D6D3B8;
+  --sidebar-ring: #3D3B1E;
+}
 
 .dark {
   /* Dark mode - default shadcn black theme */
