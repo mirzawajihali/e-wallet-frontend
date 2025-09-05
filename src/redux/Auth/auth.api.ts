@@ -26,7 +26,17 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
-       invalidatesTags: ["USER"],
+      invalidatesTags: ["USER"],
+      // Clear all cached data when logout is successful
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+          // Clear all auth-related cache after successful logout
+          dispatch(authApi.util.resetApiState());
+        } catch (error) {
+          console.error('Logout API error:', error);
+        }
+      },
     }),
 
     register: builder.mutation<AuthResponse, RegisterData>({

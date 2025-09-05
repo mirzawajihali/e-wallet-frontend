@@ -12,9 +12,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ModeToggle } from "@/layout/ModeToggler"
-import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/Auth/auth.api"
-import { useAppDispatch } from "@/redux/hook"
-import { tokenStorage } from "@/axios/axios"
+import { useUserInfoQuery } from "@/redux/Auth/auth.api"
+import { performLogout } from "@/utils/logout"
 import {Link, useLocation} from "react-router"
 
 // Navigation links array to be used in both desktop and mobile menus
@@ -30,20 +29,13 @@ const navigationLinks = [
 
 export default function Navbar() {
   const location = useLocation();
-  const dispatch = useAppDispatch();
-  
-  // Skip user info query on auth pages to prevent 403 errors
-  const shouldSkipQuery = ['/login', '/register'].includes(location.pathname);
   
   const {data} = useUserInfoQuery(undefined, {
-    skip: shouldSkipQuery
+    skip: !localStorage.getItem('accessToken') // Skip if no token
   });
-  const [logout] = useLogoutMutation();
 
-  const handleLogout = () => {
-    logout(undefined);
-    tokenStorage.clearTokens(); // Clear stored tokens
-    dispatch(authApi.util.resetApiState());
+  const handleLogout = async () => {
+    await performLogout();
   };
 
   return (

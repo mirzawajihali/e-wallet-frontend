@@ -142,7 +142,7 @@ Create a `.env` file in the root directory:
 
 ```env
 # API Configuration
-VITE_API_BASE_URL=http://localhost:5000/api/v1
+VITE_API_BASE_URL=https://e-wallet-backend-seven.vercel.app/api/v1
 VITE_BASE_URL=http://localhost:5173
 
 # Google OAuth
