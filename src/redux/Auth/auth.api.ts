@@ -48,8 +48,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["USER"],
-      // Skip the query if there's no access token
-      skip: () => !localStorage.getItem('accessToken'),
+    
     }),
     allUsers : builder.query({
       query: (params) => ({

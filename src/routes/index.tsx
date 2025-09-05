@@ -8,6 +8,7 @@ import Features from "@/pages/Features";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
+import Overview from "@/pages/Overview";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unauthorized";
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         Component: About,
         path: "/about",
+      },
+      {
+        Component: Overview,
+        path: "/overview",
       },
       {
         Component: Features,

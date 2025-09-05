@@ -34,15 +34,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <div className="flex items-center space-x-2">
-          <User className="h-6 w-6 text-muted-foreground" />
-          <span className="text-sm font-medium text-muted-foreground">
-            {userData?.data?.name || "Guest"}
-          </span>
-          <Button><Link to="/">Home</Link></Button>
-          <ModeToggle/>
+        <div className="flex flex-col items-center gap-3 px-4 py-2 rounded-2xl  shadow-sm">
+  
+ <div className="flex flex-1 items-center gap-2">
+   <Button variant="secondary" size="sm">
+    <Link to="/">Home</Link>
+  </Button>
+  <ModeToggle />
+ </div>
 
-        </div>
+  <div className="flex items-center gap-2">
+    <User className="h-6 w-6 text-muted-foreground" />
+    <span className="text-sm font-semibold text-muted-foreground">
+      {userData?.data?.name || "Guest"}
+    </span>
+  </div>
+</div>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
