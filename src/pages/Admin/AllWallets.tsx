@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useAllWalletQuery, useBlockWalletMutation, useUnblockWalletMutation } from "@/redux/Wallet/wallet.api";
 import {
   Table,

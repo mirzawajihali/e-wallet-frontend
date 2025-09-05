@@ -39,8 +39,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
-import type { ITransaction } from '@/types/userType';
+
 import { useAllTransactionsQuery } from '@/redux/Transaction/transaction.api';
+import type { ITransaction } from '@/types/transactionType';
 
 
 interface TransactionTableProps {
