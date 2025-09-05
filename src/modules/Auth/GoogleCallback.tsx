@@ -11,6 +11,9 @@ const GoogleCallback: React.FC = () => {
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        // Log the full URL for debugging
+        console.log('🌐 Full callback URL:', window.location.href);
+        
         // Get parameters from URL that your googleCallbackController sends
         const accessToken = searchParams.get('accessToken');
         const refreshToken = searchParams.get('refreshToken');
@@ -19,14 +22,16 @@ const GoogleCallback: React.FC = () => {
         const error = searchParams.get('error');
 
         console.log('🔍 Google callback params:', {
-          accessToken: accessToken ? 'received' : 'missing',
-          refreshToken: refreshToken ? 'received' : 'missing',
+          accessToken: accessToken ? `received (${accessToken.substring(0, 20)}...)` : 'missing',
+          refreshToken: refreshToken ? `received (${refreshToken.substring(0, 20)}...)` : 'missing',
           userRole,
           userName,
-          error
+          error,
+          allParams: Object.fromEntries(searchParams.entries())
         });
 
         if (error) {
+          console.error('❌ Google OAuth error:', error);
           toast.error(`Google login failed: ${error}`);
           navigate('/login', { replace: true });
           return;
@@ -38,6 +43,11 @@ const GoogleCallback: React.FC = () => {
           tokenStorage.setRefreshToken(refreshToken);
           
           console.log('🔑 Google OAuth tokens stored successfully');
+          console.log('💾 Stored in localStorage:', {
+            accessToken: localStorage.getItem('accessToken') ? 'stored' : 'failed',
+            refreshToken: localStorage.getItem('refreshToken') ? 'stored' : 'failed'
+          });
+          
           toast.success(`Welcome ${userName ? decodeURIComponent(userName) : 'back'}!`);
           
           // Navigate based on user role (same logic as your regular login)
@@ -49,10 +59,12 @@ const GoogleCallback: React.FC = () => {
           
           // Add a small delay to ensure tokens are properly stored
           setTimeout(() => {
+            console.log('⏰ Executing navigation to:', targetRoute);
             navigate(targetRoute, { replace: true });
           }, 100);
         } else {
           console.error('❌ Missing tokens in Google callback');
+          console.error('❌ Received params:', Object.fromEntries(searchParams.entries()));
           toast.error('Authentication tokens not received');
           navigate('/login', { replace: true });
         }
