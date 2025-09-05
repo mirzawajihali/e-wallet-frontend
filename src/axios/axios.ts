@@ -46,8 +46,24 @@ axiosInstance.interceptors.response.use(
     // Do something with response data
     return response;
   },
-  function onRejected(error) {
+  async function onRejected(error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
+    
+    // Handle Vercel cold start retries (for 404/502/503 errors)
+    const isRetryableError = [404, 502, 503].includes(error.response?.status);
+    const retryCount = error.config?._retryCount || 0;
+    const maxRetries = 3;
+    
+    if (isRetryableError && retryCount < maxRetries) {
+      error.config._retryCount = retryCount + 1;
+      console.log(`🔄 Retrying request (attempt ${retryCount + 1}/${maxRetries}):`, error.config.url);
+      
+      // Wait before retry (exponential backoff)
+      const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+      await new Promise(resolve => setTimeout(resolve, delay));
+      
+      return axiosInstance(error.config);
+    }
     
     // Don't redirect to login for expected authentication failures
     const isUserInfoRequest = error.config?.url?.includes('/users/me');
