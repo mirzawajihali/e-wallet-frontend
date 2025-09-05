@@ -27,4 +27,4 @@ export interface AuthResponse {
 
 
 
-export type TRole  = "SUPER_ADMIN" | "ADMIN" | "USER";
+export type TRole  = "ADMIN" | "AGENT" | "USER";

@@ -28,7 +28,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
       // Clear all cached data when logout is successful
-      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
         try {
           await queryFulfilled;
           // Clear all auth-related cache after successful logout
