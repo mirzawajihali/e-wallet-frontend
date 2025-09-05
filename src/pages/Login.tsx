@@ -1,5 +1,6 @@
 
 import { LoginForm } from "@/modules/Auth/LoginForm";
+import DemoAccounts from "@/modules/Normal/DemoAccounts";
 import { Link } from "react-router";
 
 export default function Login() {
@@ -59,6 +60,9 @@ export default function Login() {
               Multi-Currency Support
             </div>
           </div>
+          
+          {/* Demo accounts */}
+          <DemoAccounts />
         </div>
         
         {/* Decorative circles */}

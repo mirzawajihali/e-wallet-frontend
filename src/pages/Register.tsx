@@ -1,6 +1,7 @@
 
 import { Link } from "react-router";
 import { RegisterForm } from "@/modules/Auth/RegisterForm";
+import DemoAccounts from "@/modules/Normal/DemoAccounts";
 
 export default function Register() {
   return (
@@ -65,6 +66,9 @@ export default function Register() {
               <div className="text-xs text-muted-foreground">Uptime</div>
             </div>
           </div>
+          
+          {/* Demo Credentials */}
+          <DemoAccounts />
         </div>
       </div>
       
