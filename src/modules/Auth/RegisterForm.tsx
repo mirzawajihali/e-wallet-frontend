@@ -79,37 +79,34 @@ export function RegisterForm({
       password: data.password,
     };
 
-    console.log('🔄 Submitting registration with data:', userInfo);
-
     try {
-      const result = await register(userInfo).unwrap();
-      console.log('✅ Registration successful:', result);
+      // Clear any existing auth data before registration
+      tokenStorage.clearTokens();
       
-      // Store tokens from the response
+      const result = await register(userInfo).unwrap();
+      
+      // Store new tokens from the response
       if (result.data?.accessToken) {
         tokenStorage.setAccessToken(result.data.accessToken);
-        console.log('🔑 Access token stored after registration');
       }
       if (result.data?.refreshToken) {
         tokenStorage.setRefreshToken(result.data.refreshToken);
-        console.log('🔑 Refresh token stored after registration');
       }
       
       toast.success("User created successfully and logged in");
       
-      // Navigate immediately since tokens are now stored
+      // Navigate based on the NEW user's role from the response
       const targetRoute = result.data?.user?.role === 'ADMIN' ? '/admin' 
                        : result.data?.user?.role === 'AGENT' ? '/agent' 
                        : '/user';
-      
-      console.log('🚀 Navigating to:', targetRoute);
       
       // Add a small delay to ensure tokens are properly stored and state is updated
       setTimeout(() => {
         navigate(targetRoute, { replace: true });
       }, 100);
     } catch (error: unknown) {
-      console.error('❌ Registration failed:', error);
+      // Clear any tokens on registration failure
+      tokenStorage.clearTokens();
       
       // Enhanced error handling
       const apiError = error as { status?: number; data?: { message?: string; errorSources?: Array<{ message?: string }> } };

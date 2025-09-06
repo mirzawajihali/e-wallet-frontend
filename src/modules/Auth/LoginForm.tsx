@@ -1,6 +1,3 @@
-
-
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -40,29 +37,30 @@ export function LoginForm({
   });
   const [login] = useLoginMutation();
 
-
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const userInfo = {
       email: data.email,
       password: data.password,
     };
     
-    
+    // Clear any existing tokens before attempting new login
+    tokenStorage.clearTokens();
+    localStorage.removeItem('user');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
     
     try {
       const res = await login(userInfo).unwrap();
-      console.log('✅ Login response:', res);
-      console.log('📊 Response data:', res.data);
       
       if(res.success){
         // Store tokens from the response
         if (res.data?.accessToken) {
           tokenStorage.setAccessToken(res.data.accessToken);
-          console.log('🔑 Access token stored');
         }
         if (res.data?.refreshToken) {
           tokenStorage.setRefreshToken(res.data?.refreshToken);
-          console.log('🔑 Refresh token stored');
         }
         
         toast.success("Login Successful");
@@ -71,8 +69,6 @@ export function LoginForm({
         const targetRoute = res.data?.user?.role === 'ADMIN' ? '/admin' 
                          : res.data?.user?.role === 'AGENT' ? '/agent' 
                          : '/user';
-        
-        console.log('🚀 Navigating to:', targetRoute);
         
         // Add a small delay to ensure tokens are properly stored and state is updated
         setTimeout(() => {
@@ -89,7 +85,7 @@ export function LoginForm({
       if (apiError.status === 404) {
         toast.error("Login endpoint not found. Please check the API URL.");
       } else if (apiError.status === 401) {
-        toast.error("Invalid email or password");
+        toast.error("Invalid email or password. Please try again.");
       } else if (apiError.data?.message) {
         toast.error(apiError.data.message);
       } else {
@@ -98,7 +94,7 @@ export function LoginForm({
     }
   };
 
-    const handleGoogleLogin = () => {
+  const handleGoogleLogin = () => {
     // Get current page to redirect back after login
     const currentPath = window.location.pathname;
     const backendUrl = config.baseUrl
@@ -190,9 +186,10 @@ export function LoginForm({
           Continue with Google
         </Button>
       </div>
+
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link to="/register" replace className="text-primary hover:underline font-medium">
+        Don't have an account?{" "}
+        <Link to="/register" replace={true} className="text-primary hover:underline font-medium">
           Sign up
         </Link>
       </div>
